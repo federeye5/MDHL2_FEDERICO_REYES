@@ -1,6 +1,3 @@
-let dataEventsArray = Array.from(data.events)
-//console.log(dataEventsArray);
-
 let contenedor = document.getElementById("mainHome")
 let checkContenedor = document.getElementById("checkContenedor")
 let input = document.querySelector("input")
@@ -10,8 +7,8 @@ input.addEventListener('input', dobleFiltro)
 checkContenedor.addEventListener('change', dobleFiltro)
 
 
-mostrarCardsEventos(dataEventsArray);
-crearCheckboxes(dataEventsArray)
+mostrarCardsEventos(data.events);
+crearCheckboxes(data.events)
 
 
 function mostrarCardsEventos(array) {
@@ -29,7 +26,7 @@ function mostrarCardsEventos(array) {
                             <h5 class="card-title text-light-emphasis">${elemento.name}</h5>
                                     <p class="card-text text-light">${elemento.description} </p>
                                     <p class="fs-4 text-info-emphasis mx-5">Price:$${elemento.price} </a>
-                                            <a href="./details.html" class="btn btn-primary me-auto ms-5
+                                            <a href="./details.html?id=${elemento._id} " class="btn btn-primary me-auto ms-5
                                                     p-2">Details</a>
                     </div>
             </div>`
@@ -79,7 +76,7 @@ function filtrarPorCategoria(array) {
 }
 
 function dobleFiltro() {
-        let filtroTexto = filtrarPorTexto(dataEventsArray, input.value)
+        let filtroTexto = filtrarPorTexto(data.events, input.value)
         let filtroCategoria = filtrarPorCategoria(filtroTexto)
         mostrarCardsEventos(filtroCategoria)
 }
