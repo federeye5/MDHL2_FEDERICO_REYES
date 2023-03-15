@@ -1,4 +1,4 @@
-const queryString = location.search
+/*const queryString = location.search
 let params = new URLSearchParams(queryString)
 let _id = params.get("_id")
 
@@ -24,4 +24,23 @@ function mostrarCardsEventos() {
         </div>`
     
     contenedor.innerHTML = tarjetas
-}
+}*/
+
+      const eventDetailsDiv = document.getElementById("event-details");
+      const eventId = new URLSearchParams(window.location.search).get("id");
+      const event = data.events.find(e => e._id == eventId);
+
+      if (event) {
+        eventDetailsDiv.querySelector(".event-title-card").textContent = event.name;
+        eventDetailsDiv.querySelector(".event-image-card").src = event.image;
+        eventDetailsDiv.querySelector(".event-image-card").alt = event.name;
+        eventDetailsDiv.querySelector("p:nth-of-type(1)").textContent += ` ${event.date}`;
+        eventDetailsDiv.querySelector("p:nth-of-type(2)").textContent += ` ${event.description}`;
+        eventDetailsDiv.querySelector("p:nth-of-type(3)").textContent += ` ${event.category}`;
+        eventDetailsDiv.querySelector("p:nth-of-type(4)").textContent += ` ${event.place}`;
+        eventDetailsDiv.querySelector("p:nth-of-type(5)").textContent += ` ${event.capacity}`;
+        eventDetailsDiv.querySelector("p:nth-of-type(6)").textContent += ` ${event.assistance}`;
+        eventDetailsDiv.querySelector("p:nth-of-type(7)").textContent += ` $${event.price}`;
+      } else {
+        eventDetailsDiv.innerHTML = "<p>Event not found.</p>";
+      }
