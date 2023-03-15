@@ -1,19 +1,19 @@
 let contenedor = document.getElementById("mainHome")
 let checkContenedor = document.getElementById("checkContenedor")
 let input = document.querySelector("input")
-
+let dataEventos = data.events
 
 input.addEventListener('input', dobleFiltro)
 checkContenedor.addEventListener('change', dobleFiltro)
 
 
-mostrarCardsEventos(data.events);
-crearCheckboxes(data.events)
+mostrarCardsEventos(dataEventos);
+crearCheckboxes(dataEventos)
 
 
 function mostrarCardsEventos(array) {
         if (array.length == 0) {
-                contenedor.innerHTML = "<h2 class='display-1 fw-bolder'>No hay elementos coincidentes!</h2>"
+                contenedor.innerHTML = "<h2 class='display-1 fw-bolder'>There are no matching events!</h2>"
                 return
         }
         let tarjetas = ''
@@ -24,10 +24,11 @@ function mostrarCardsEventos(array) {
                     class="card-img-top" alt="${elemento.category} ">
                     <div class="card-body" data-bs-theme="dark">
                             <h5 class="card-title text-light-emphasis">${elemento.name}</h5>
-                                    <p class="card-text text-light">${elemento.description} </p>
-                                    <p class="fs-4 text-info-emphasis mx-5">Price:$${elemento.price} </a>
-                                            <a href="./details.html?id=${elemento._id} " class="btn btn-primary me-auto ms-5
-                                                    p-2">Details</a>
+                                        <p class="card-text text-light">${elemento.description} </p>
+                                        <li class="card-text text-light">Date of Event: ${elemento.date} </li>
+                                        <p class="fs-4 text-info-emphasis mx-5">Price:$${elemento.price} </p>
+                                        <a href="/paginas/details.html?id=${elemento._id}" class="card-link btn btn-primary me-auto ms-5
+                                                p-2">Details</a>
                     </div>
             </div>`
         })
@@ -76,7 +77,7 @@ function filtrarPorCategoria(array) {
 }
 
 function dobleFiltro() {
-        let filtroTexto = filtrarPorTexto(data.events, input.value)
+        let filtroTexto = filtrarPorTexto(dataEventos, input.value)
         let filtroCategoria = filtrarPorCategoria(filtroTexto)
         mostrarCardsEventos(filtroCategoria)
 }
