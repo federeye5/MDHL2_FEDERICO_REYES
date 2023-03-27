@@ -1,20 +1,30 @@
-let arrayPasados = [];
-for (x = 0; x < data.events.length; x++) {
-        if (data.events[x].date <= data.currentDate) {
-                //console.log(data.events[x])
-                arrayPasados.push(data.events[x]);
-        }
-}
+let urlApi = "https://mindhub-xj03.onrender.com/api/amazing"
 
 let contenedor = document.getElementById("mainPE");
 let checkContenedor = document.getElementById("checkContenedor");
 let input = document.querySelector("input");
 
-input.addEventListener("input", dobleFiltro);
-checkContenedor.addEventListener("change", dobleFiltro);
+traerDatos()
 
-mostrarCardsEventos(arrayPasados);
-crearCheckboxes(arrayPasados);
+async function traerDatos(){
+try{
+        const response = await fetch(urlApi)
+        const data = await response.json()
+        const pastEvents = filtrarEventosPasados(data);
+        mostrarCardsEventos(pastEvents)
+        crearCheckboxes(data.events)
+        input.addEventListener('input', ()=>{
+                dobleFiltro(data.events, input.value)
+        })
+        checkContenedor.addEventListener('change', ()=>{
+                dobleFiltro(data.events)
+        })
+}catch (e){
+        console.log(e);
+}
+
+}
+
 
 function mostrarCardsEventos(array) {
         if (array.length == 0) {
@@ -85,8 +95,13 @@ function filtrarPorCategoria(array) {
         return arrayFiltrado;
 }
 
-function dobleFiltro() {
-        let filtroTexto = filtrarPorTexto(arrayPasados, input.value);
+function dobleFiltro(array) {
+        let filtroTexto = filtrarPorTexto(array, input.value);
         let filtroCategoria = filtrarPorCategoria(filtroTexto);
         mostrarCardsEventos(filtroCategoria);
+}
+
+function filtrarEventosPasados(array){
+        const eventosPasados = array.events.filter((evento)=> evento.date < array.currentDate)
+        return eventosPasados;
 }

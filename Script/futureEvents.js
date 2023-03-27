@@ -1,31 +1,29 @@
-let arrayFuturos = []
-/*
-arrayFuturos.forEach(e => {
-        if (data.events[e].date >= data.currentDate) {
-                console.log(data.events[x])
-                arrayFuturos.push(data.events[e])
-            } 
-});*/
+let urlApi = "https://mindhub-xj03.onrender.com/api/amazing"
 
-for (x=0;x<data.events.length;x++) {
-    if (data.events[x].date >= data.currentDate) {
-        //console.log(data.events[x])
-        arrayFuturos.push(data.events[x])
-    }
+const contenedor = document.getElementById("mainFE")
+const checkContenedor = document.getElementById("checkContenedor")
+const input = document.querySelector("input")
+
+traerDatos()
+
+async function traerDatos(){
+try{
+        const response = await fetch(urlApi)
+        const data = await response.json()
+        const futureEvents = filtrarEventosFuturos(data);
+        mostrarCardsEventos(futureEvents)
+        crearCheckboxes(data.events)
+        input.addEventListener('input', ()=>{
+                dobleFiltro(data.events, input.value)
+        })
+        checkContenedor.addEventListener('change', ()=>{
+                dobleFiltro(data.events)
+        })
+}catch (e){
+        console.log(e);
 }
 
-
-let contenedor = document.getElementById("mainFE")
-let checkContenedor = document.getElementById("checkContenedor")
-let input = document.querySelector("input")
-
-
-input.addEventListener('input', dobleFiltro)
-checkContenedor.addEventListener('change', dobleFiltro)
-
-
-mostrarCardsEventos(arrayFuturos);
-crearCheckboxes(arrayFuturos)
+}
 
 
 function mostrarCardsEventos(array) {
@@ -93,10 +91,15 @@ function filtrarPorCategoria(array) {
 
 }
 
-function dobleFiltro() {
-        let filtroTexto = filtrarPorTexto(arrayFuturos, input.value)
+function dobleFiltro(array) {
+        let filtroTexto = filtrarPorTexto(array, input.value)
         let filtroCategoria = filtrarPorCategoria(filtroTexto)
         mostrarCardsEventos(filtroCategoria)
+}
+
+function filtrarEventosFuturos(array){
+        const eventosFuturos = array.events.filter((event) => event.date > array.currentDate)
+        return eventosFuturos
 }
 
 

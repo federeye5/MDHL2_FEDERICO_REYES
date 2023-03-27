@@ -1,14 +1,35 @@
+let urlApi = "https://mindhub-xj03.onrender.com/api/amazing"
+
 let contenedor = document.getElementById("mainHome")
 let checkContenedor = document.getElementById("checkContenedor")
 let input = document.querySelector("input")
-let dataEventos = data.events
-
-input.addEventListener('input', dobleFiltro)
-checkContenedor.addEventListener('change', dobleFiltro)
 
 
-mostrarCardsEventos(dataEventos);
-crearCheckboxes(dataEventos)
+//input.addEventListener('input', dobleFiltro)
+//checkContenedor.addEventListener('change', dobleFiltro)
+
+traerDatos()
+
+async function traerDatos(){
+try{
+        const response = await fetch(urlApi)
+        const data = await response.json()
+        mostrarCardsEventos(data.events)
+        crearCheckboxes(data.events)
+        input.addEventListener('input', ()=>{
+                dobleFiltro(data.events, input.value)
+        })
+        checkContenedor.addEventListener('change', ()=>{
+                dobleFiltro(data.events)
+        })
+}catch (e){
+        console.log(e);
+}
+
+}
+
+//mostrarCardsEventos(dataEventos);
+//crearCheckboxes(dataEventos)
 
 
 function mostrarCardsEventos(array) {
@@ -76,34 +97,8 @@ function filtrarPorCategoria(array) {
 
 }
 
-function dobleFiltro() {
-        let filtroTexto = filtrarPorTexto(dataEventos, input.value)
+function dobleFiltro(array) {
+        let filtroTexto = filtrarPorTexto(array, input.value)
         let filtroCategoria = filtrarPorCategoria(filtroTexto)
         mostrarCardsEventos(filtroCategoria)
 }
-
-
-
-
-
-/*function mostrarCardsEventos() {
-        let contenedor = document.getElementById("mainHome")
-        let stringHTML = "";                
-                for (x of data.events) {
-                        //console.table(x);
-                        stringHTML += `
-                        <div class=" card d-flex m-3 bg-secondary bg-gradient" style="width:
-                        25rem;">
-                        <img src="${x.image}"
-                                class="card-img-top" alt="${x.category} ">
-                                <div class="card-body" data-bs-theme="dark">
-                                        <h5 class="card-title text-light-emphasis">${x.name}</h5>
-                                                <p class="card-text text-light">${x.description} </p>
-                                                <p class="fs-4 text-info-emphasis mx-5">Price:$${x.price} </a>
-                                                        <a href="./details.html" class="btn btn-primary me-auto ms-5
-                                                                p-2">Details</a>
-                                </div>
-                        </div>`;
-                }
-        contenedor.innerHTML = stringHTML;
-}*/
